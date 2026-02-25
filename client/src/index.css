@@ -1,0 +1,26 @@
+@import "@/font.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-bgColor text-textPrimary font-sans;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-heading text-textPrimary;
+    }
+    input, textarea {
+        @apply text-textPrimary bg-white border border-cardBorder rounded-lg focus:border-primary outline-none placeholder:text-textSecondary/60;
+    }
+}
+
+@layer components {
+    .recipe-card {
+        @apply bg-white hover:bg-bgColor transition-all duration-300 border border-cardBorder;
+    }
+    
+    .category-card {
+        @apply bg-white hover:bg-bgColor border border-cardBorder transition-all duration-300;
+    }
+}
