@@ -1,11 +1,11 @@
 // src/layouts/MainLayout.jsx
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Button from "@/components/Button";
 import { Menu, X, Search, Upload } from "lucide-react";
 import logo from "@/assets/images/logo.svg";
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -122,8 +122,10 @@ const MainLayout = ({ children }) => {
                 )}
             </header>
 
-            {/* Main Content */}
-            <main className="flex-grow">{children}</main>
+            {/* Main Content - Outlet renders child routes */}
+            <main className="flex-grow pt-0">
+                <Outlet />
+            </main>
 
             {/* Footer */}
             <footer className="bg-gray-900 text-white py-6 mt-auto">
