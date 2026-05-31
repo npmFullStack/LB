@@ -2,7 +2,15 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "@/components/Button";
-import { User, Mail, Lock, UserCheck, UserPlus } from "lucide-react";
+import {
+    User,
+    Mail,
+    Lock,
+    UserCheck,
+    UserPlus,
+    Eye,
+    EyeOff
+} from "lucide-react";
 import logo from "@/assets/images/logo.svg";
 
 const SignUp = () => {
@@ -52,7 +60,7 @@ const SignUp = () => {
                 {/* Sign Up Form */}
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {/* First Name & Last Name Row */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 First Name
