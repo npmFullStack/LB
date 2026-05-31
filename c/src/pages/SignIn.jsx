@@ -2,25 +2,26 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "@/components/Button";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, LogIn } from "lucide-react";
 import logo from "@/assets/images/logo.svg";
 
 const SignIn = () => {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
-        password: "",
+        password: ""
     });
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleChange = (e) => {
+    const handleChange = e => {
         const { name, value } = e.target;
-        setFormData((prev) => ({
+        setFormData(prev => ({
             ...prev,
-            [name]: value,
+            [name]: value
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault();
         // No validation - direct navigation to Dashboard
         navigate("/dashboard");
@@ -28,11 +29,15 @@ const SignIn = () => {
 
     return (
         <div className="w-full max-w-md">
-            <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="bg-white backdrop-blur-sm rounded-3xl p-8">
                 {/* Logo Section */}
                 <div className="text-center mb-8">
                     <div className="flex justify-center mb-4">
-                        <img src={logo} alt="LutongBahay Logo" className="h-16 w-auto" />
+                        <img
+                            src={logo}
+                            alt="LutongBahay Logo"
+                            className="h-16 w-auto"
+                        />
                     </div>
                     <h1 className="text-3xl font-bold text-primary font-logo">
                         LutongBahay
@@ -55,7 +60,7 @@ const SignIn = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 placeholder="you@example.com"
-                                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                             />
                         </div>
                     </div>
@@ -68,13 +73,24 @@ const SignIn = () => {
                         <div className="relative">
                             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input
-                                type="password"
+                                type={showPassword ? "text" : "password"}
                                 name="password"
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder="••••••••"
-                                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                             />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="w-5 h-5" />
+                                ) : (
+                                    <Eye className="w-5 h-5" />
+                                )}
+                            </button>
                         </div>
                     </div>
 
@@ -84,7 +100,9 @@ const SignIn = () => {
                         variant="primary"
                         size="lg"
                         fullWidth
-                        className="mt-6"
+                        icon={LogIn}
+                        iconPosition="right"
+                        className="mt-6 rounded-2xl"
                     >
                         Sign In
                     </Button>
@@ -93,7 +111,10 @@ const SignIn = () => {
                 {/* Sign Up Link */}
                 <p className="text-center text-gray-600 mt-6">
                     Don't have an account?{" "}
-                    <Link to="/signup" className="text-primary hover:underline font-medium">
+                    <Link
+                        to="/signup"
+                        className="text-primary hover:underline font-medium"
+                    >
                         Sign Up
                     </Link>
                 </p>

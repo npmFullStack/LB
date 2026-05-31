@@ -6,6 +6,7 @@ import BackLayout from "@/layouts/BackLayout";
 import Home from "@/pages/Home";
 import SignIn from "@/pages/SignIn";
 import SignUp from "@/pages/SignUp";
+import RecipeDetails from "@/pages/RecipeDetails";
 
 function App() {
     return (
@@ -14,14 +15,15 @@ function App() {
                 {/* Routes using MainLayout */}
                 <Route element={<MainLayout />}>
                     <Route path="/" element={<Home />} />
-                    {/* Add more MainLayout routes here */}
                 </Route>
 
                 {/* Routes using BackLayout */}
                 <Route element={<BackLayout />}>
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                </Route>
+                      <Route path="/recipe/:id" element={<RecipeDetails />} />
+
+              </Route>
             </Routes>
         </Router>
     );

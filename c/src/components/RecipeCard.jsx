@@ -1,5 +1,6 @@
 // src/components/RecipeCard.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import Badge from "./Badge";
 import {
@@ -11,18 +12,22 @@ import {
     Utensils,
     IceCream,
     Apple,
-    Soup
+    Soup,
+    User
 } from "lucide-react";
 
 const RecipeCard = ({ recipe }) => {
+    const navigate = useNavigate();
     const {
+        id,
         title,
         image,
         category,
         servings,
         cookTime,
         difficulty,
-        description
+        description,
+        uploader
     } = recipe;
 
     // Function to get badge color and icon based on category
@@ -39,6 +44,10 @@ const RecipeCard = ({ recipe }) => {
 
     const { color, icon: CategoryIcon } = getBadgeConfig(category);
 
+    const handleViewRecipe = () => {
+        navigate(`/recipe/${id}`);
+    };
+
     return (
         <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
             {/* Image Container */}
@@ -48,7 +57,7 @@ const RecipeCard = ({ recipe }) => {
                     alt={title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
-                {/* Badge on Top Right - Now with icon! */}
+                {/* Badge on Top Right */}
                 <div className="absolute top-3 right-3">
                     <Badge variant="solid" color={color}>
                         <div className="flex items-center gap-1">
@@ -70,27 +79,46 @@ const RecipeCard = ({ recipe }) => {
                     {description}
                 </p>
 
-                {/* Recipe Details */}
-                <div className="flex items-center justify-between gap-2 mb-4 text-xs text-gray-600">
-                    <div className="flex items-center gap-1">
-                        <Users className="w-3 h-3" />
-                        <span>{servings}</span>
+                {/* Uploader Info */}
+                <div className="flex items-center gap-2 mb-3 p-2 bg-gray-50 rounded-lg">
+                    <img
+                        src={uploader?.avatar}
+                        alt={uploader?.name}
+                        className="w-6 h-6 rounded-full object-cover"
+                    />
+                    <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Uploaded by</span>
+                        <span className="text-sm font-medium text-gray-700">
+                            {uploader?.name}
+                        </span>
                     </div>
-                    <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        <span>{cookTime}</span>
+                </div>
+
+                {/* Recipe Details - Made text larger */}
+                <div className="grid grid-cols-3 gap-2 mb-4 text-gray-700">
+                    <div className="flex flex-col items-center gap-1 p-2 bg-gray-50 rounded-lg">
+                        <Users className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-semibold">{servings}</span>
+                        <span className="text-xs text-gray-500">Servings</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                        <ChefHat className="w-3 h-3" />
-                        <span className="capitalize">{difficulty}</span>
+                    <div className="flex flex-col items-center gap-1 p-2 bg-gray-50 rounded-lg">
+                        <Clock className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-semibold">{cookTime}</span>
+                        <span className="text-xs text-gray-500">Cook Time</span>
+                    </div>
+                    <div className="flex flex-col items-center gap-1 p-2 bg-gray-50 rounded-lg">
+                        <ChefHat className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-semibold capitalize">{difficulty}</span>
+                        <span className="text-xs text-gray-500">Difficulty</span>
                     </div>
                 </div>
 
                 {/* View Details Button */}
                 <Button
-                    variant="outline"
+                    variant="primary"
                     size="md"
                     fullWidth
+                    onClick={handleViewRecipe}
                     icon={ArrowRight}
                     iconPosition="right"
                     iconClassName="w-5 h-5"

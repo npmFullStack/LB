@@ -5,7 +5,6 @@ export default {
         extend: {
             colors: {
                 primary: "#EB6914",
-                
             },
             fontFamily: {
                 sans: ['"Roboto Slab"', "serif"]

@@ -18,9 +18,9 @@ const BackLayout = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50">
+        <div className="min-h-screen flex flex-col bg-gradient-to-br from-orange-50 to-amber-50">
             {/* Header with Back Button */}
-            <header className="bg-white shadow-sm sticky top-0 z-50">
+            <header className="bg-white backdrop-blur-sm shadow-sm sticky top-0 z-50">
                 <div className="container mx-auto px-4 py-4 flex items-center">
                     <Button
                         variant="ghost"
@@ -39,7 +39,7 @@ const BackLayout = () => {
             </header>
 
             {/* Main Content - Outlet renders child routes */}
-            <main className="flex-grow flex items-center justify-center p-4">
+            <main className="flex-grow flex items-center justify-center p-4 bg-white">
                 <Outlet />
             </main>
         </div>

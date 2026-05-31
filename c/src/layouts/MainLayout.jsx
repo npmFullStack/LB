@@ -1,6 +1,6 @@
 // src/layouts/MainLayout.jsx
 import React, { useState, useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import Button from "@/components/Button";
 import { Menu, X, Search, Upload } from "lucide-react";
 import logo from "@/assets/images/logo.svg";
@@ -8,6 +8,7 @@ import logo from "@/assets/images/logo.svg";
 const MainLayout = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -16,6 +17,14 @@ const MainLayout = () => {
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
+    const handleFindRecipe = () => {
+        navigate("/all-recipes");
+    };
+
+    const handleShareRecipe = () => {
+        navigate("/signin");
+    };
 
     return (
         <div className="min-h-screen flex flex-col">
@@ -49,6 +58,7 @@ const MainLayout = () => {
                             size="md"
                             icon={Search}
                             iconPosition="left"
+                            onClick={handleFindRecipe}
                             className={
                                 isScrolled
                                     ? "text-primary"
@@ -62,6 +72,7 @@ const MainLayout = () => {
                             size="md"
                             icon={Upload}
                             iconPosition="left"
+                            onClick={handleShareRecipe}
                             className={
                                 !isScrolled
                                     ? "bg-white text-primary border-0 hover:bg-gray-100"
@@ -103,6 +114,7 @@ const MainLayout = () => {
                                 fullWidth
                                 icon={Search}
                                 iconPosition="left"
+                                onClick={handleFindRecipe}
                                 className="text-primary justify-center"
                             >
                                 Find Recipe
@@ -113,6 +125,7 @@ const MainLayout = () => {
                                 fullWidth
                                 icon={Upload}
                                 iconPosition="left"
+                                onClick={handleShareRecipe}
                                 className="justify-center"
                             >
                                 Share Recipe
