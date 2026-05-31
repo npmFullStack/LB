@@ -13,7 +13,6 @@ import {
     IceCream,
     Apple,
     Soup,
-    User
 } from "lucide-react";
 
 const RecipeCard = ({ recipe }) => {
@@ -27,17 +26,16 @@ const RecipeCard = ({ recipe }) => {
         cookTime,
         difficulty,
         description,
-        uploader
+        uploader,
     } = recipe;
 
-    // Function to get badge color and icon based on category
-    const getBadgeConfig = cat => {
+    const getBadgeConfig = (cat) => {
         const config = {
             Beverage: { color: "blue", icon: Coffee },
             "Main Dish": { color: "orange", icon: Utensils },
             Dessert: { color: "yellow", icon: IceCream },
             Appetizer: { color: "green", icon: Apple },
-            Soup: { color: "red", icon: Soup }
+            Soup: { color: "red", icon: Soup },
         };
         return config[cat] || { color: "gray", icon: null };
     };
@@ -49,7 +47,7 @@ const RecipeCard = ({ recipe }) => {
     };
 
     return (
-        <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+        <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-300 flex flex-col">
             {/* Image Container */}
             <div className="relative h-48 overflow-hidden">
                 <img
@@ -57,13 +55,10 @@ const RecipeCard = ({ recipe }) => {
                     alt={title}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
-                {/* Badge on Top Right */}
                 <div className="absolute top-3 right-3">
                     <Badge variant="solid" color={color}>
                         <div className="flex items-center gap-1">
-                            {CategoryIcon && (
-                                <CategoryIcon className="w-3 h-3" />
-                            )}
+                            {CategoryIcon && <CategoryIcon className="w-3 h-3" />}
                             <span>{category}</span>
                         </div>
                     </Badge>
@@ -71,60 +66,67 @@ const RecipeCard = ({ recipe }) => {
             </div>
 
             {/* Content */}
-            <div className="p-4">
-                <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-1">
+            <div className="p-4 flex flex-col flex-1">
+                <h3 className="text-lg font-bold text-gray-800 mb-1 line-clamp-1">
                     {title}
                 </h3>
-                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                <p className="text-gray-500 text-sm mb-4 line-clamp-2 leading-relaxed">
                     {description}
                 </p>
 
-                {/* Uploader Info */}
-                <div className="flex items-center gap-2 mb-3 p-2 bg-gray-50 rounded-lg">
-                    <img
-                        src={uploader?.avatar}
-                        alt={uploader?.name}
-                        className="w-6 h-6 rounded-full object-cover"
-                    />
-                    <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Uploaded by</span>
-                        <span className="text-sm font-medium text-gray-700">
-                            {uploader?.name}
+                {/* Recipe Details — vertical, left-aligned, no bg */}
+                <div className="flex flex-col gap-2 mb-4">
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <Users className="w-4 h-4 text-primary shrink-0" />
+                        <span className="text-sm">
+                            <span className="font-semibold text-gray-800">{servings}</span>
+                            <span className="text-gray-400 ml-1">servings</span>
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <Clock className="w-4 h-4 text-primary shrink-0" />
+                        <span className="text-sm">
+                            <span className="font-semibold text-gray-800">{cookTime}</span>
+                            <span className="text-gray-400 ml-1">cook time</span>
+                        </span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                        <ChefHat className="w-4 h-4 text-primary shrink-0" />
+                        <span className="text-sm">
+                            <span className="font-semibold text-gray-800 capitalize">{difficulty}</span>
+                            <span className="text-gray-400 ml-1">difficulty</span>
                         </span>
                     </div>
                 </div>
 
-                {/* Recipe Details - Made text larger */}
-                <div className="grid grid-cols-3 gap-2 mb-4 text-gray-700">
-                    <div className="flex flex-col items-center gap-1 p-2 bg-gray-50 rounded-lg">
-                        <Users className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-semibold">{servings}</span>
-                        <span className="text-xs text-gray-500">Servings</span>
+                {/* Bottom row — uploader right, button fills width */}
+                <div className="mt-auto pt-3 border-t border-gray-100">
+                    <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs text-gray-400">Uploaded by</span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-xs font-medium text-gray-700">
+                                {uploader?.name}
+                            </span>
+                            <img
+                                src={uploader?.avatar}
+                                alt={uploader?.name}
+                                className="w-6 h-6 rounded-full object-cover ring-1 ring-gray-200"
+                            />
+                        </div>
                     </div>
-                    <div className="flex flex-col items-center gap-1 p-2 bg-gray-50 rounded-lg">
-                        <Clock className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-semibold">{cookTime}</span>
-                        <span className="text-xs text-gray-500">Cook Time</span>
-                    </div>
-                    <div className="flex flex-col items-center gap-1 p-2 bg-gray-50 rounded-lg">
-                        <ChefHat className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-semibold capitalize">{difficulty}</span>
-                        <span className="text-xs text-gray-500">Difficulty</span>
-                    </div>
-                </div>
 
-                {/* View Details Button */}
-                <Button
-                    variant="primary"
-                    size="md"
-                    fullWidth
-                    onClick={handleViewRecipe}
-                    icon={ArrowRight}
-                    iconPosition="right"
-                    iconClassName="w-5 h-5"
-                >
-                    View Recipe
-                </Button>
+                    <Button
+                        variant="outline"
+                        size="md"
+                        fullWidth
+                        onClick={handleViewRecipe}
+                        icon={ArrowRight}
+                        iconPosition="right"
+                        iconClassName="w-4 h-4"
+                    >
+                        View Recipe
+                    </Button>
+                </div>
             </div>
         </div>
     );
