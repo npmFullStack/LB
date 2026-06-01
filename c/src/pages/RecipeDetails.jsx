@@ -13,19 +13,17 @@ import {
     IceCream,
     Apple,
     Soup,
-    CheckCircle2,
-    Circle,
     BookOpen,
-    ListOrdered,
+    ListOrdered
 } from "lucide-react";
 
-const getBadgeConfig = (cat) => {
+const getBadgeConfig = cat => {
     const config = {
         Beverage: { color: "blue", icon: Coffee },
         "Main Dish": { color: "orange", icon: Utensils },
         Dessert: { color: "yellow", icon: IceCream },
         Appetizer: { color: "green", icon: Apple },
-        Soup: { color: "red", icon: Soup },
+        Soup: { color: "red", icon: Soup }
     };
     return config[cat] || { color: "gray", icon: null };
 };
@@ -33,17 +31,19 @@ const getBadgeConfig = (cat) => {
 const RecipeDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const recipe = recipes.find((r) => String(r.id) === String(id));
+    const recipe = recipes.find(r => String(r.id) === String(id));
 
-    const [checkedIngredients, setCheckedIngredients] = useState([]);
-    const [checkedSteps, setCheckedSteps] = useState([]);
     const [activeTab, setActiveTab] = useState("ingredients");
 
     if (!recipe) {
         return (
             <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-center px-4">
-                <h2 className="text-2xl font-bold text-gray-800">Recipe not found</h2>
-                <p className="text-gray-500">The recipe you're looking for doesn't exist.</p>
+                <h2 className="text-2xl font-bold text-gray-800">
+                    Recipe not found
+                </h2>
+                <p className="text-gray-500">
+                    The recipe you're looking for doesn't exist.
+                </p>
                 <Button variant="primary" onClick={() => navigate("/")}>
                     Go Home
                 </Button>
@@ -62,32 +62,24 @@ const RecipeDetails = () => {
         uploader,
         ingredients = [],
         steps = [],
-        rating,
     } = recipe;
 
     const { color, icon: CategoryIcon } = getBadgeConfig(category);
 
-    const toggleIngredient = (i) => {
-        setCheckedIngredients((prev) =>
-            prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]
-        );
-    };
+    const difficultyColor =
+        {
+            easy: "green",
+            medium: "orange",
+            hard: "red"
+        }[difficulty?.toLowerCase()] || "gray";
 
-    const toggleStep = (i) => {
-        setCheckedSteps((prev) =>
-            prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]
-        );
+    const handleUploaderClick = () => {
+        navigate(`/user/${uploader.id}`);
     };
-
-    const difficultyColor = {
-        easy: "green",
-        medium: "orange",
-        hard: "red",
-    }[difficulty?.toLowerCase()] || "gray";
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Hero Image */}
+            {/* Hero Image - Full Width */}
             <div className="relative h-72 md:h-96 w-full overflow-hidden">
                 <img
                     src={image}
@@ -98,9 +90,11 @@ const RecipeDetails = () => {
 
                 {/* Category Badge */}
                 <div className="absolute top-4 right-4">
-                    <Badge variant="solid" color={color}>
+                    <Badge variant="soft" color={color}>
                         <div className="flex items-center gap-1">
-                            {CategoryIcon && <CategoryIcon className="w-3 h-3" />}
+                            {CategoryIcon && (
+                                <CategoryIcon className="w-3 h-3" />
+                            )}
                             <span>{category}</span>
                         </div>
                     </Badge>
@@ -108,58 +102,76 @@ const RecipeDetails = () => {
 
                 {/* Title over image */}
                 <div className="absolute bottom-0 left-0 right-0 px-6 pb-6">
-                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-1 drop-shadow">
+                    <h1 className="text-3xl md:text-5xl font-bold text-white mb-1 drop-shadow">
                         {title}
                     </h1>
-                    <p className="text-gray-200 text-sm line-clamp-2 max-w-2xl">
+                    <p className="text-gray-200 text-sm md:text-base line-clamp-2 max-w-3xl">
                         {description}
                     </p>
                 </div>
             </div>
 
-            {/* Main Content */}
-            <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
-
+            {/* Main Content - Full Width */}
+            <div className="max-w-5xl mx-auto px-6 md:px-8 py-8 md:py-12 space-y-6">
                 {/* Meta Bar */}
-                <div className="bg-white rounded-2xl border border-gray-100 p-5 flex flex-wrap gap-6 items-center justify-between">
+                <div className="bg-white rounded-2xl border border-gray-100 p-5 md:p-6 flex flex-wrap gap-6 items-center justify-between shadow-sm">
                     <div className="flex flex-wrap gap-6">
                         <div className="flex items-center gap-2">
                             <Users className="w-5 h-5 text-primary" />
                             <div>
-                                <p className="text-xs text-gray-400">Servings</p>
-                                <p className="text-sm font-semibold text-gray-800">{servings}</p>
+                                <p className="text-xs text-gray-400">
+                                    Servings
+                                </p>
+                                <p className="text-sm font-semibold text-gray-800">
+                                    {servings}
+                                </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
                             <Clock className="w-5 h-5 text-primary" />
                             <div>
-                                <p className="text-xs text-gray-400">Cook Time</p>
-                                <p className="text-sm font-semibold text-gray-800">{cookTime}</p>
+                                <p className="text-xs text-gray-400">
+                                    Cook Time
+                                </p>
+                                <p className="text-sm font-semibold text-gray-800">
+                                    {cookTime}
+                                </p>
                             </div>
                         </div>
                         <div className="flex items-center gap-2">
                             <ChefHat className="w-5 h-5 text-primary" />
                             <div>
-                                <p className="text-xs text-gray-400">Difficulty</p>
-                                <Badge variant="soft" color={difficultyColor} className="mt-0.5 capitalize">
+                                <p className="text-xs text-gray-400">
+                                    Difficulty
+                                </p>
+                                <Badge
+                                    variant="outline"
+                                    color={difficultyColor}
+                                    className="mt-0.5 capitalize"
+                                >
                                     {difficulty}
                                 </Badge>
                             </div>
                         </div>
                     </div>
 
-                    {/* Uploader */}
-                    <div className="flex items-center gap-3">
+                    {/* Uploader - Made Clickable */}
+                    <button
+                        onClick={handleUploaderClick}
+                        className="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer group"
+                    >
                         <img
                             src={uploader?.avatar}
                             alt={uploader?.name}
-                            className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20"
+                            className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all"
                         />
-                        <div>
+                        <div className="text-left">
                             <p className="text-xs text-gray-400">Uploaded by</p>
-                            <p className="text-sm font-semibold text-gray-800">{uploader?.name}</p>
+                            <p className="text-sm font-semibold text-gray-800 group-hover:text-primary transition-colors">
+                                {uploader?.name}
+                            </p>
                         </div>
-                    </div>
+                    </button>
                 </div>
 
                 {/* Tabs */}
@@ -188,34 +200,24 @@ const RecipeDetails = () => {
                     </button>
                 </div>
 
-                {/* Ingredients Tab */}
+                {/* Ingredients Tab - No checkboxes */}
                 {activeTab === "ingredients" && (
-                    <div className="bg-white rounded-2xl border border-gray-100 p-5">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-bold text-gray-800">Ingredients</h2>
-                            <span className="text-xs text-gray-400">
-                                {checkedIngredients.length}/{ingredients.length} checked
-                            </span>
-                        </div>
+                    <div className="bg-white rounded-2xl border border-gray-100 p-5 md:p-6 shadow-sm">
+                        <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-4">
+                            Ingredients
+                        </h2>
                         {ingredients.length === 0 ? (
-                            <p className="text-gray-400 text-sm">No ingredients listed.</p>
+                            <p className="text-gray-400 text-sm">
+                                No ingredients listed.
+                            </p>
                         ) : (
-                            <ul className="space-y-2">
+                            <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                 {ingredients.map((ing, i) => (
                                     <li
                                         key={i}
-                                        onClick={() => toggleIngredient(i)}
-                                        className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 ${
-                                            checkedIngredients.includes(i)
-                                                ? "bg-primary/5 text-gray-400 line-through"
-                                                : "hover:bg-gray-50 text-gray-700"
-                                        }`}
+                                        className="flex items-center gap-3 p-3 text-gray-700"
                                     >
-                                        {checkedIngredients.includes(i) ? (
-                                            <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                                        ) : (
-                                            <Circle className="w-5 h-5 text-gray-300 shrink-0" />
-                                        )}
+                                        <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
                                         <span className="text-sm">{ing}</span>
                                     </li>
                                 ))}
@@ -224,49 +226,27 @@ const RecipeDetails = () => {
                     </div>
                 )}
 
-                {/* Steps Tab */}
+                {/* Steps Tab - No checkboxes */}
                 {activeTab === "steps" && (
-                    <div className="bg-white rounded-2xl border border-gray-100 p-5">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-bold text-gray-800">Instructions</h2>
-                            <span className="text-xs text-gray-400">
-                                {checkedSteps.length}/{steps.length} done
-                            </span>
-                        </div>
+                    <div className="bg-white rounded-2xl border border-gray-100 p-5 md:p-6 shadow-sm">
+                        <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-4">
+                            Instructions
+                        </h2>
                         {steps.length === 0 ? (
-                            <p className="text-gray-400 text-sm">No instructions listed.</p>
+                            <p className="text-gray-400 text-sm">
+                                No instructions listed.
+                            </p>
                         ) : (
-                            <ol className="space-y-3">
+                            <ol className="space-y-4">
                                 {steps.map((step, i) => (
                                     <li
                                         key={i}
-                                        onClick={() => toggleStep(i)}
-                                        className={`flex gap-4 p-4 rounded-xl cursor-pointer transition-all duration-200 ${
-                                            checkedSteps.includes(i)
-                                                ? "bg-primary/5"
-                                                : "hover:bg-gray-50"
-                                        }`}
+                                        className="flex gap-4 p-3 text-gray-700"
                                     >
-                                        <div
-                                            className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-200 ${
-                                                checkedSteps.includes(i)
-                                                    ? "bg-primary text-white"
-                                                    : "bg-gray-100 text-gray-500"
-                                            }`}
-                                        >
-                                            {checkedSteps.includes(i) ? (
-                                                <CheckCircle2 className="w-4 h-4" />
-                                            ) : (
-                                                i + 1
-                                            )}
+                                        <div className="shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary">
+                                            {i + 1}
                                         </div>
-                                        <p
-                                            className={`text-sm leading-relaxed pt-0.5 transition-all duration-200 ${
-                                                checkedSteps.includes(i)
-                                                    ? "text-gray-400 line-through"
-                                                    : "text-gray-700"
-                                            }`}
-                                        >
+                                        <p className="text-sm leading-relaxed pt-0.5">
                                             {step}
                                         </p>
                                     </li>

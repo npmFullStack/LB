@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import SignIn from "@/pages/SignIn";
 import SignUp from "@/pages/SignUp";
 import RecipeDetails from "@/pages/RecipeDetails";
+import UserDetails from "@/pages/UserDetails";
 
 function App() {
     return (
@@ -21,9 +22,9 @@ function App() {
                 <Route element={<BackLayout />}>
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                      <Route path="/recipe/:id" element={<RecipeDetails />} />
-
-              </Route>
+                    <Route path="/recipe/:id" element={<RecipeDetails />} />
+                    <Route path="/user/:userId" element={<UserDetails />} />
+                </Route>
             </Routes>
         </Router>
     );

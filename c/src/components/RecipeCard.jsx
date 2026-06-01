@@ -13,6 +13,7 @@ import {
     IceCream,
     Apple,
     Soup,
+    Star,
 } from "lucide-react";
 
 const RecipeCard = ({ recipe }) => {
@@ -27,6 +28,8 @@ const RecipeCard = ({ recipe }) => {
         difficulty,
         description,
         uploader,
+        rating,
+        reviews,
     } = recipe;
 
     const getBadgeConfig = (cat) => {
@@ -44,6 +47,37 @@ const RecipeCard = ({ recipe }) => {
 
     const handleViewRecipe = () => {
         navigate(`/recipe/${id}`);
+    };
+
+    const handleUploaderClick = (e) => {
+        e.stopPropagation();
+        navigate(`/user/${uploader.id}`);
+    };
+
+    // Render star rating
+    const renderStars = () => {
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+        
+        return (
+            <div className="flex items-center gap-1">
+                {[...Array(fullStars)].map((_, i) => (
+                    <Star key={`full-${i}`} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                ))}
+                {hasHalfStar && (
+                    <div className="relative">
+                        <Star className="w-4 h-4 text-yellow-400" />
+                        <div className="absolute inset-0 overflow-hidden w-1/2">
+                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        </div>
+                    </div>
+                )}
+                {[...Array(emptyStars)].map((_, i) => (
+                    <Star key={`empty-${i}`} className="w-4 h-4 text-gray-300" />
+                ))}
+            </div>
+        );
     };
 
     return (
@@ -97,22 +131,32 @@ const RecipeCard = ({ recipe }) => {
                             <span className="text-gray-400 ml-1">difficulty</span>
                         </span>
                     </div>
+                    
+                    {/* Rating Section */}
+                    <div className="flex items-center gap-2 pt-1">
+                        {renderStars()}
+                        <span className="text-sm font-semibold text-gray-800">{rating}</span>
+                        <span className="text-xs text-gray-400">({reviews.toLocaleString()} reviews)</span>
+                    </div>
                 </div>
 
                 {/* Bottom row — uploader right, button fills width */}
                 <div className="mt-auto pt-3 border-t border-gray-100">
                     <div className="flex items-center justify-between mb-3">
                         <span className="text-xs text-gray-400">Uploaded by</span>
-                        <div className="flex items-center gap-2">
-                            <span className="text-xs font-medium text-gray-700">
+                        <button
+                            onClick={handleUploaderClick}
+                            className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer group"
+                        >
+                            <span className="text-xs font-medium text-gray-700 group-hover:text-primary transition-colors">
                                 {uploader?.name}
                             </span>
                             <img
                                 src={uploader?.avatar}
                                 alt={uploader?.name}
-                                className="w-6 h-6 rounded-full object-cover ring-1 ring-gray-200"
+                                className="w-6 h-6 rounded-full object-cover ring-1 ring-gray-200 group-hover:ring-primary transition-all"
                             />
-                        </div>
+                        </button>
                     </div>
 
                     <Button

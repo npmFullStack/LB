@@ -7,7 +7,7 @@ export default {
                 primary: "#EB6914",
             },
             fontFamily: {
-                sans: ['"Roboto Slab"', "serif"]
+                sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
             }
         }
     },

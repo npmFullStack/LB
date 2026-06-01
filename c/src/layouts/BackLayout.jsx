@@ -38,8 +38,8 @@ const BackLayout = () => {
                 </div>
             </header>
 
-            {/* Main Content - Outlet renders child routes */}
-            <main className="flex-grow flex items-center justify-center p-4 bg-white">
+            {/* Main Content - Removed centering classes */}
+            <main className="flex-grow bg-white">
                 <Outlet />
             </main>
         </div>

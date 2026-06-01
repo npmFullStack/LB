@@ -6,6 +6,43 @@ import avatar1 from "@/assets/avatar/avatar1.png";
 import avatar2 from "@/assets/avatar/avatar2.png";
 import avatar3 from "@/assets/avatar/avatar3.png";
 
+// User data
+export const users = [
+    {
+        id: 1,
+        name: "Maria Santos",
+        avatar: avatar1,
+        joinDate: "January 2023",
+        bio: "Passionate home cook sharing authentic Filipino recipes passed down through generations. Love exploring traditional flavors and creating modern twists.",
+        location: "Manila, Philippines",
+        followers: 1247,
+        following: 342,
+        recipeCount: 2
+    },
+    {
+        id: 2,
+        name: "Juan Dela Cruz",
+        avatar: avatar2,
+        joinDate: "March 2023",
+        bio: "Food enthusiast and culinary experimenter. I believe that cooking is an art that brings families together.",
+        location: "Cebu, Philippines",
+        followers: 892,
+        following: 156,
+        recipeCount: 2
+    },
+    {
+        id: 3,
+        name: "Jose Rizal",
+        avatar: avatar3,
+        joinDate: "February 2023",
+        bio: "Traditional Filipino cuisine keeper. Sharing heirloom recipes and cooking techniques from my grandmother.",
+        location: "Laguna, Philippines",
+        followers: 2156,
+        following: 89,
+        recipeCount: 2
+    }
+];
+
 export const recipes = [
     {
         id: 1,
@@ -17,6 +54,7 @@ export const recipes = [
         cookTime: "45 min",
         difficulty: "Easy",
         rating: 4.8,
+        reviews: 234,
         ingredients: ["Chicken", "Soy Sauce", "Vinegar", "Garlic", "Bay Leaves", "Black Pepper"],
         steps: [
             "Marinate chicken in soy sauce, garlic, and black pepper for at least 30 minutes.",
@@ -26,11 +64,7 @@ export const recipes = [
             "Add bay leaves and simmer until chicken is tender.",
             "Serve hot with steamed rice."
         ],
-        uploader: {
-            name: "Maria Santos",
-            avatar: avatar1,
-            joinDate: "January 2023"
-        }
+        uploader: users[0] // Maria Santos
     },
     {
         id: 2,
@@ -42,6 +76,7 @@ export const recipes = [
         cookTime: "15 min",
         difficulty: "Easy",
         rating: 4.9,
+        reviews: 567,
         ingredients: ["Ice", "Evaporated Milk", "Ube Halaya", "Leche Flan", "Sweetened Beans", "Fruits", "Saba Banana", "Macapuno"],
         steps: [
             "Layer sweetened beans, fruits, macapuno, and ube halaya in a tall glass.",
@@ -50,11 +85,7 @@ export const recipes = [
             "Top with leche flan and a scoop of ube ice cream.",
             "Mix everything together before eating."
         ],
-        uploader: {
-            name: "Juan Dela Cruz",
-            avatar: avatar2,
-            joinDate: "March 2023"
-        }
+        uploader: users[1] // Juan Dela Cruz
     },
     {
         id: 3,
@@ -66,6 +97,7 @@ export const recipes = [
         cookTime: "60 min",
         difficulty: "Medium",
         rating: 4.7,
+        reviews: 189,
         ingredients: ["Pork Belly", "Tamarind", "Kangkong", "Radish", "Eggplant", "String Beans", "Tomato", "Onion"],
         steps: [
             "Boil pork in water until tender, skimming off scum.",
@@ -75,11 +107,7 @@ export const recipes = [
             "Add string beans and kangkong stalks, cook for 2 minutes.",
             "Add kangkong leaves, turn off heat, and serve hot."
         ],
-        uploader: {
-            name: "Jose Rizal",
-            avatar: avatar3,
-            joinDate: "February 2023"
-        }
+        uploader: users[2] // Jose Rizal
     },
     {
         id: 4,
@@ -91,6 +119,7 @@ export const recipes = [
         cookTime: "10 min",
         difficulty: "Easy",
         rating: 4.6,
+        reviews: 123,
         ingredients: ["Kapeng Barako Beans", "Hot Water", "Sugar", "Milk (optional)"],
         steps: [
             "Grind Kapeng Barako beans to a medium-coarse consistency.",
@@ -100,11 +129,7 @@ export const recipes = [
             "Press or strain the coffee.",
             "Add sugar and milk to taste."
         ],
-        uploader: {
-            name: "Maria Santos",
-            avatar: avatar1,
-            joinDate: "January 2023"
-        }
+        uploader: users[0] // Maria Santos
     },
     {
         id: 5,
@@ -116,6 +141,7 @@ export const recipes = [
         cookTime: "30 min",
         difficulty: "Medium",
         rating: 4.8,
+        reviews: 445,
         ingredients: ["Ground Pork", "Carrots", "Onions", "Spring Roll Wrappers", "Egg", "Garlic", "Salt", "Pepper", "Cooking Oil"],
         steps: [
             "Mix ground pork, finely chopped carrots, onions, garlic, salt, and pepper.",
@@ -125,11 +151,7 @@ export const recipes = [
             "Fry lumpia until golden brown and crispy.",
             "Drain on paper towels and serve with sweet and sour sauce."
         ],
-        uploader: {
-            name: "Juan Dela Cruz",
-            avatar: avatar2,
-            joinDate: "March 2023"
-        }
+        uploader: users[1] // Juan Dela Cruz
     },
     {
         id: 6,
@@ -141,6 +163,7 @@ export const recipes = [
         cookTime: "90 min",
         difficulty: "Hard",
         rating: 4.9,
+        reviews: 678,
         ingredients: ["Egg Yolks", "Condensed Milk", "Evaporated Milk", "Sugar", "Vanilla Extract"],
         steps: [
             "Melt sugar in a saucepan over low heat until golden brown.",
@@ -152,10 +175,6 @@ export const recipes = [
             "Cool completely and refrigerate.",
             "Flip onto a plate before serving."
         ],
-        uploader: {
-            name: "Jose Rizal",
-            avatar: avatar3,
-            joinDate: "February 2023"
-        }
+        uploader: users[2] // Jose Rizal
     }
 ];
