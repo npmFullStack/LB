@@ -1,6 +1,5 @@
 // src/components/CategoryCard.jsx
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 // Import all category images statically
 import mainDishImg from "@/assets/categories/main-dish.png";
@@ -9,9 +8,7 @@ import dessertImg from "@/assets/categories/dessert.png";
 import appetizerImg from "@/assets/categories/appetizer.png";
 import soupImg from "@/assets/categories/soup.png";
 
-const CategoryCard = ({ name, image }) => {
-    const navigate = useNavigate();
-
+const CategoryCard = ({ name, image, onClick, isSelected }) => {
     // Map image names to imported images
     const imageMap = {
         "main-dish": mainDishImg,
@@ -24,13 +21,17 @@ const CategoryCard = ({ name, image }) => {
     const imageUrl = imageMap[image] || mainDishImg;
 
     const handleClick = () => {
-        navigate(`/recipes?category=${encodeURIComponent(name)}`);
+        if (onClick) {
+            onClick(name);
+        }
     };
 
     return (
         <div
             onClick={handleClick}
-            className="group cursor-pointer transition-all duration-300 flex items-center gap-4 bg-white rounded-xl shadow-md hover:shadow-xl p-3"
+            className={`group cursor-pointer transition-all duration-300 flex items-center gap-4 bg-white rounded-xl shadow-md hover:shadow-xl p-3 ${
+                isSelected ? "border-2 border-primary ring-2 ring-primary/20" : "border border-transparent"
+            }`}
         >
             {/* Image on the left */}
             <div className="relative overflow-hidden rounded-lg w-16 h-16 flex-shrink-0 bg-gray-100">
@@ -42,7 +43,9 @@ const CategoryCard = ({ name, image }) => {
             </div>
 
             {/* Name on the right */}
-            <h2 className="font-semibold text-gray-700 group-hover:text-primary transition-colors flex-1">
+            <h2 className={`font-semibold transition-colors flex-1 ${
+                isSelected ? "text-primary" : "text-gray-700 group-hover:text-primary"
+            }`}>
                 {name}
             </h2>
         </div>

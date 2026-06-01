@@ -1,25 +1,36 @@
-// src/App.jsx
+// src/App.jsx (updated)
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import BackLayout from "@/layouts/BackLayout";
-import Home from "@/pages/Home";
+import AppLayout from "@/layouts/AppLayout";
+import Index from "@/pages/Index";
 import SignIn from "@/pages/SignIn";
 import SignUp from "@/pages/SignUp";
 import RecipeDetails from "@/pages/RecipeDetails";
 import UserDetails from "@/pages/UserDetails";
 import AllRecipes from "@/pages/AllRecipes";
+import SearchRecipe from "@/pages/SearchRecipe";
+import Home from "@/pages/Home";
+import Profile from "@/pages/Profile"; // Changed from MyRecipes to Profile
 
 function App() {
     return (
         <Router>
             <Routes>
-                {/* Routes using MainLayout */}
+                {/* Landing page with MainLayout */}
                 <Route element={<MainLayout />}>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Index />} />
                 </Route>
 
-                {/* Routes using BackLayout */}
+                {/* Authenticated pages with AppLayout */}
+                <Route element={<AppLayout />}>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/profile" element={<Profile />} />{" "}
+      <Route path="/search-recipe" element={<SearchRecipe />} />
+                </Route>
+
+                {/* Routes with BackLayout */}
                 <Route element={<BackLayout />}>
                     <Route path="/signin" element={<SignIn />} />
                     <Route path="/signup" element={<SignUp />} />

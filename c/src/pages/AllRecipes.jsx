@@ -16,20 +16,41 @@ const AllRecipes = () => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filters, setFilters] = useState({});
     const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     // Get search param from navigation
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const searchQuery = params.get("search");
+        const categoryQuery = params.get("category");
+
         if (searchQuery) {
             setSearchTerm(searchQuery);
-            applyFilters(searchQuery, filters);
+            setSelectedCategory(null);
+            applyFilters(searchQuery, filters, null);
+        } else if (categoryQuery) {
+            setSelectedCategory(categoryQuery);
+            setSearchTerm("");
+            applyFilters("", filters, categoryQuery);
+        } else {
+            setSelectedCategory(null);
+            applyFilters(searchTerm, filters, null);
         }
     }, [location.search]);
 
-    const applyFilters = (search, activeFilters) => {
+    const applyFilters = (
+        search,
+        activeFilters,
+        category = selectedCategory
+    ) => {
         let filtered = [...recipes];
 
+        // Apply category filter (from URL param or selected category)
+        if (category && category !== "All") {
+            filtered = filtered.filter(recipe => recipe.category === category);
+        }
+
+        // Apply search filter
         if (search) {
             filtered = filtered.filter(
                 recipe =>
@@ -40,18 +61,25 @@ const AllRecipes = () => {
             );
         }
 
-        if (activeFilters.category && activeFilters.category !== "All") {
+        // Apply category filter from filter menu
+        if (
+            activeFilters.category &&
+            activeFilters.category !== "All" &&
+            !category
+        ) {
             filtered = filtered.filter(
                 recipe => recipe.category === activeFilters.category
             );
         }
 
+        // Apply difficulty filter
         if (activeFilters.difficulty && activeFilters.difficulty !== "All") {
             filtered = filtered.filter(
                 recipe => recipe.difficulty === activeFilters.difficulty
             );
         }
 
+        // Apply cook time filter
         if (activeFilters.maxCookTime) {
             filtered = filtered.filter(recipe => {
                 const time = parseInt(recipe.cookTime);
@@ -65,6 +93,7 @@ const AllRecipes = () => {
             });
         }
 
+        // Apply sorting
         if (activeFilters.sortBy) {
             if (activeFilters.sortBy === "Cook Time: Low to High") {
                 filtered.sort(
@@ -85,17 +114,31 @@ const AllRecipes = () => {
     const handleSearch = e => {
         const term = e.target.value;
         setSearchTerm(term);
-        applyFilters(term, filters);
+        setSelectedCategory(null);
+        applyFilters(term, filters, null);
+        // Update URL without category param
+        navigate("/recipes", { replace: true });
     };
 
     const handleApplyFilters = newFilters => {
         setFilters(newFilters);
-        applyFilters(searchTerm, newFilters);
+        applyFilters(searchTerm, newFilters, selectedCategory);
         setIsFilterOpen(false);
     };
 
     const handleViewAllRecipes = () => {
+        setSelectedCategory(null);
+        setSearchTerm("");
+        setFilters({});
         navigate("/recipes");
+    };
+
+    const handleCategoryClick = categoryName => {
+        setSelectedCategory(categoryName);
+        setSearchTerm("");
+        // Reset filters when selecting a category
+        setFilters({});
+        navigate(`/recipes?category=${encodeURIComponent(categoryName)}`);
     };
 
     // Categories data
@@ -164,47 +207,115 @@ const AllRecipes = () => {
                             Explore recipes by dish type
                         </p>
                     </div>
-                    {/* Grid: 2 cols on mobile, 3 cols on desktop with max width for cards */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-xl mx-auto md:max-w-none">
-                        {categories.map(category => (
-                            <CategoryCard
-                                key={category.name}
-                                name={category.name}
-                                image={category.image}
-                            />
-                        ))}
-                    </div>{" "}
+
+<div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-xl mx-auto md:max-w-none">
+    {categories.map(category => (
+        <CategoryCard
+            key={category.name}
+            name={category.name}
+            image={category.image}
+            onClick={() => handleCategoryClick(category.name)}
+            isSelected={selectedCategory === category.name}
+        />
+    ))}
+</div>
                 </section>
 
-                {/* Popular Recipes Section */}
-                <section className="mb-16">
-                    {/* Responsive header: flex on desktop, stacked on mobile */}
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
-                        <div>
-                            <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
-                                Popular Recipes
-                            </h2>
-                            <p className="text-gray-600 mt-1">
-                                Most loved by our community
-                            </p>
+                {/* Filtered Recipes Results Section */}
+                {(selectedCategory ||
+                    searchTerm ||
+                    Object.keys(filters).length > 0) && (
+                    <section className="mb-16">
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
+                            <div>
+                                <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+                                    {selectedCategory
+                                        ? `${selectedCategory} Recipes`
+                                        : searchTerm
+                                          ? `Search Results for "${searchTerm}"`
+                                          : "Filtered Recipes"}
+                                </h2>
+                                <p className="text-gray-600 mt-1">
+                                    Found {filteredRecipes.length} recipe
+                                    {filteredRecipes.length !== 1 ? "s" : ""}
+                                </p>
+                            </div>
+                            {(selectedCategory ||
+                                searchTerm ||
+                                Object.keys(filters).length > 0) && (
+                                <Button
+                                    variant="ghost"
+                                    onClick={handleViewAllRecipes}
+                                    className="text-primary hover:text-orange-600 mt-2 sm:mt-0 self-end sm:self-auto"
+                                >
+                                    Clear Filters
+                                </Button>
+                            )}
                         </div>
-                        <Button
-                            variant="ghost"
-                            onClick={handleViewAllRecipes}
-                            icon={ArrowRight}
-                            iconPosition="right"
-                            className="text-primary hover:text-orange-600 mt-2 sm:mt-0 self-end sm:self-auto"
-                        >
-                            View All
-                        </Button>
-                    </div>
-                    {/* Grid: 1 col on mobile, 2 cols on tablet, 4 cols on desktop */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {popularRecipes.map(recipe => (
-                            <RecipeCard key={recipe.id} recipe={recipe} />
-                        ))}
-                    </div>
-                </section>
+
+                        {filteredRecipes.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {filteredRecipes.map(recipe => (
+                                    <RecipeCard
+                                        key={recipe.id}
+                                        recipe={recipe}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-12">
+                                <img
+                                    src={noResultImg}
+                                    alt="No results found"
+                                    className="w-48 mx-auto mb-4 opacity-50"
+                                />
+                                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                                    No recipes found
+                                </h3>
+                                <p className="text-gray-500">
+                                    Try adjusting your search or filter criteria
+                                </p>
+                            </div>
+                        )}
+                    </section>
+                )}
+
+                {/* Popular Recipes Section - Only show when no category/search/filters are active */}
+                {!selectedCategory &&
+                    !searchTerm &&
+                    Object.keys(filters).length === 0 && (
+                        <section className="mb-16">
+                            {/* Responsive header: flex on desktop, stacked on mobile */}
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
+                                <div>
+                                    <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+                                        Popular Recipes
+                                    </h2>
+                                    <p className="text-gray-600 mt-1">
+                                        Most loved by our community
+                                    </p>
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    onClick={handleViewAllRecipes}
+                                    icon={ArrowRight}
+                                    iconPosition="right"
+                                    className="text-primary hover:text-orange-600 mt-2 sm:mt-0 self-end sm:self-auto"
+                                >
+                                    View All
+                                </Button>
+                            </div>
+                            {/* Grid: 1 col on mobile, 2 cols on tablet, 4 cols on desktop */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                {popularRecipes.map(recipe => (
+                                    <RecipeCard
+                                        key={recipe.id}
+                                        recipe={recipe}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    )}
             </div>
             {/* Footer */}
             <footer className="bg-gray-900 text-white py-6 mt-auto">

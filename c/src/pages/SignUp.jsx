@@ -36,7 +36,7 @@ const SignUp = () => {
     const handleSubmit = e => {
         e.preventDefault();
         // No validation - direct navigation to Dashboard
-        navigate("/dashboard");
+        navigate("/home");
     };
 
     return (

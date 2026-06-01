@@ -11,34 +11,53 @@ export const users = [
     {
         id: 1,
         name: "Maria Santos",
+        email: "maria.santos@example.com",
         avatar: avatar1,
         joinDate: "January 2023",
         bio: "Passionate home cook sharing authentic Filipino recipes passed down through generations. Love exploring traditional flavors and creating modern twists.",
         followers: 1247,
         following: 342,
-        recipeCount: 2
+        recipeCount: 2,
+        isFollowing: false // Current user is not following Maria
     },
     {
         id: 2,
         name: "Juan Dela Cruz",
+        email: "juan.delacruz@example.com",
         avatar: avatar2,
         joinDate: "March 2023",
         bio: "Food enthusiast and culinary experimenter. I believe that cooking is an art that brings families together.",
         followers: 892,
         following: 156,
-        recipeCount: 2
+        recipeCount: 2,
+        isFollowing: true // Current user follows Juan
     },
     {
         id: 3,
         name: "Jose Rizal",
+        email: "jose.rizal@example.com",
         avatar: avatar3,
         joinDate: "February 2023",
         bio: "Traditional Filipino cuisine keeper. Sharing heirloom recipes and cooking techniques from my grandmother.",
         followers: 2156,
         following: 89,
-        recipeCount: 2
+        recipeCount: 2,
+        isFollowing: true // Current user follows Jose
     }
 ];
+
+// Current logged-in user
+export const currentUser = {
+    id: 1,
+    name: "Maria Santos",
+    email: "maria.santos@example.com",
+    avatar: avatar1,
+    joinDate: "January 2023",
+    bio: "Passionate home cook sharing authentic Filipino recipes passed down through generations. Love exploring traditional flavors and creating modern twists.",
+    followers: 1247,
+    following: 342,
+    recipeCount: 2
+};
 
 export const recipes = [
     {
@@ -61,7 +80,8 @@ export const recipes = [
             "Add bay leaves and simmer until chicken is tender.",
             "Serve hot with steamed rice."
         ],
-        uploader: users[0] // Maria Santos
+        uploader: users[0], // Maria Santos
+        isFavorite: true // Added to favorites
     },
     {
         id: 2,
@@ -82,7 +102,8 @@ export const recipes = [
             "Top with leche flan and a scoop of ube ice cream.",
             "Mix everything together before eating."
         ],
-        uploader: users[1] // Juan Dela Cruz
+        uploader: users[1], // Juan Dela Cruz
+        isFavorite: false
     },
     {
         id: 3,
@@ -104,7 +125,8 @@ export const recipes = [
             "Add string beans and kangkong stalks, cook for 2 minutes.",
             "Add kangkong leaves, turn off heat, and serve hot."
         ],
-        uploader: users[2] // Jose Rizal
+        uploader: users[2], // Jose Rizal
+        isFavorite: true // Added to favorites
     },
     {
         id: 4,
@@ -126,7 +148,8 @@ export const recipes = [
             "Press or strain the coffee.",
             "Add sugar and milk to taste."
         ],
-        uploader: users[0] // Maria Santos
+        uploader: users[0], // Maria Santos
+        isFavorite: false
     },
     {
         id: 5,
@@ -148,7 +171,8 @@ export const recipes = [
             "Fry lumpia until golden brown and crispy.",
             "Drain on paper towels and serve with sweet and sour sauce."
         ],
-        uploader: users[1] // Juan Dela Cruz
+        uploader: users[1], // Juan Dela Cruz
+        isFavorite: false
     },
     {
         id: 6,
@@ -172,6 +196,51 @@ export const recipes = [
             "Cool completely and refrigerate.",
             "Flip onto a plate before serving."
         ],
-        uploader: users[2] // Jose Rizal
+        uploader: users[2], // Jose Rizal
+        isFavorite: false
     }
 ];
+
+// Helper function to get recipes by user ID
+export const getRecipesByUser = (userId) => {
+    return recipes.filter(recipe => recipe.uploader.id === userId);
+};
+
+// Helper function to get favorite recipes
+export const getFavoriteRecipes = () => {
+    return recipes.filter(recipe => recipe.isFavorite);
+};
+
+// Helper function to get following users (users that current user follows)
+export const getFollowingUsers = () => {
+    return users.filter(user => user.isFollowing);
+};
+
+// Helper function to get recipes from following users
+export const getFollowingRecipes = () => {
+    const followingUserIds = users.filter(user => user.isFollowing).map(user => user.id);
+    return recipes.filter(recipe => followingUserIds.includes(recipe.uploader.id));
+};
+
+// Helper function to toggle favorite status
+export const toggleFavorite = (recipeId, currentStatus) => {
+    const recipe = recipes.find(r => r.id === recipeId);
+    if (recipe) {
+        recipe.isFavorite = !currentStatus;
+    }
+    return recipe;
+};
+
+// Helper function to toggle follow status
+export const toggleFollow = (userId, currentStatus) => {
+    const user = users.find(u => u.id === userId);
+    if (user) {
+        user.isFollowing = !currentStatus;
+        if (user.isFollowing) {
+            user.followers += 1;
+        } else {
+            user.followers -= 1;
+        }
+    }
+    return user;
+};

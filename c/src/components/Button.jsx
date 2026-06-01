@@ -12,13 +12,13 @@ const Button = ({
     className = "",
     icon: Icon,
     iconPosition = "left",
-    iconClassName = "", 
+    iconClassName = "",
     ...props
 }) => {
     const variants = {
         primary: "bg-primary text-white hover:bg-orange-600",
         outline: "border-2 border-primary text-primary hover:bg-orange-50",
-        ghost: "text-gray-600 hover:bg-gray-100"
+        ghost: "text-gray-600"
     };
 
     const sizes = {
