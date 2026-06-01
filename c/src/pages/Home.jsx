@@ -1,22 +1,31 @@
 // src/pages/Home.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@/components/Button";
 import RecipeCard from "@/components/RecipeCard";
 import FilterMenu from "@/components/FilterMenu";
 import { recipes } from "@/data/mock_data";
-import { Search, Filter, ChevronDown } from "lucide-react";
+import { Search, Filter, ChevronDown, ArrowRight } from "lucide-react";
 import heroBg from "@/assets/images/heroBg.png";
 
 const Home = () => {
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState("");
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filters, setFilters] = useState({});
     const [filteredRecipes, setFilteredRecipes] = useState(recipes);
 
     const handleSearch = e => {
-        const term = e.target.value.toLowerCase();
+        const term = e.target.value;
         setSearchTerm(term);
-        applyFilters(term, filters);
+        
+        if (term && term.trim() !== "") {
+            // Navigate to AllRecipes with search param
+            navigate(`/recipes?search=${encodeURIComponent(term)}`);
+        } else {
+            // If search is empty, just update local state
+            applyFilters(term, filters);
+        }
     };
 
     const applyFilters = (search, activeFilters) => {
@@ -25,8 +34,8 @@ const Home = () => {
         if (search) {
             filtered = filtered.filter(
                 recipe =>
-                    recipe.title.toLowerCase().includes(search) ||
-                    recipe.description.toLowerCase().includes(search)
+                    recipe.title.toLowerCase().includes(search.toLowerCase()) ||
+                    recipe.description.toLowerCase().includes(search.toLowerCase())
             );
         }
 
@@ -77,6 +86,15 @@ const Home = () => {
         applyFilters(searchTerm, newFilters);
         setIsFilterOpen(false);
     };
+
+    const handleViewAllRecipes = () => {
+        navigate("/recipes");
+    };
+
+    // Get featured recipes (first 4 or popular ones)
+    const featuredRecipes = [...recipes]
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 4);
 
     return (
         <div>
@@ -131,37 +149,48 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Featured Recipes Section - Changed to grid-cols-4 */}
-            <section className="py-16 bg-gray-50">
-                <div className="container mx-auto px-4">
-                    <div className="text-center mb-12">
-                        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-                            Featured Recipes
-                        </h2>
-                        <p className="text-gray-600 max-w-2xl mx-auto">
-                            Discover our most popular and beloved Filipino
-                            dishes, hand-picked by our community of home cooks.
-                        </p>
-                    </div>
+{/* Featured Recipes Section */}
+<section className="py-16 bg-gray-50">
+    <div className="container mx-auto px-4">
+        {/* Responsive header: flex on desktop, stacked on mobile */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8">
+            <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
+                    Featured Recipes
+                </h2>
+                <p className="text-gray-600">
+                    Discover our most popular and beloved Filipino
+                    dishes, hand-picked by our community of home cooks.
+                </p>
+            </div>
+            <Button
+                variant="ghost"
+                onClick={handleViewAllRecipes}
+                icon={ArrowRight}
+                iconPosition="right"
+                className="text-primary hover:text-orange-600 mt-2 sm:mt-0 self-end sm:self-auto"
+            >
+                View All Recipes
+            </Button>
+        </div>
 
-                    {/* Recipes Grid - Changed to 4 columns */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {filteredRecipes.map(recipe => (
-                            <RecipeCard key={recipe.id} recipe={recipe} />
-                        ))}
-                    </div>
+        {/* Recipes Grid - 4 columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {featuredRecipes.map(recipe => (
+                <RecipeCard key={recipe.id} recipe={recipe} />
+            ))}
+        </div>
 
-                    {/* No Results Message */}
-                    {filteredRecipes.length === 0 && (
-                        <div className="text-center py-12">
-                            <p className="text-gray-500 text-lg">
-                                No recipes found matching your criteria.
-                            </p>
-                        </div>
-                    )}
-                </div>
-            </section>
-
+        {/* No Results Message */}
+        {filteredRecipes.length === 0 && searchTerm && (
+            <div className="text-center py-12">
+                <p className="text-gray-500 text-lg">
+                    No recipes found matching your criteria.
+                </p>
+            </div>
+        )}
+    </div>
+</section>
             {/* Sidebar Filter Menu */}
             <FilterMenu
                 isOpen={isFilterOpen}

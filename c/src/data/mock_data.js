@@ -14,7 +14,6 @@ export const users = [
         avatar: avatar1,
         joinDate: "January 2023",
         bio: "Passionate home cook sharing authentic Filipino recipes passed down through generations. Love exploring traditional flavors and creating modern twists.",
-        location: "Manila, Philippines",
         followers: 1247,
         following: 342,
         recipeCount: 2
@@ -25,7 +24,6 @@ export const users = [
         avatar: avatar2,
         joinDate: "March 2023",
         bio: "Food enthusiast and culinary experimenter. I believe that cooking is an art that brings families together.",
-        location: "Cebu, Philippines",
         followers: 892,
         following: 156,
         recipeCount: 2
@@ -36,7 +34,6 @@ export const users = [
         avatar: avatar3,
         joinDate: "February 2023",
         bio: "Traditional Filipino cuisine keeper. Sharing heirloom recipes and cooking techniques from my grandmother.",
-        location: "Laguna, Philippines",
         followers: 2156,
         following: 89,
         recipeCount: 2

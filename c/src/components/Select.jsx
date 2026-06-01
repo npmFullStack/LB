@@ -21,13 +21,14 @@ const CustomSelect = ({
             borderColor: state.isFocused ? "#EB6914" : "#d1d5db",
             borderWidth: "1px",
             borderRadius: "0.5rem",
-            boxShadow: state.isFocused ? "0 0 0 2px rgba(235, 105, 20, 0.2)" : "none",
+            boxShadow: state.isFocused
+                ? "0 0 0 2px rgba(235, 105, 20, 0.2)"
+                : "none",
             "&:hover": {
                 borderColor: "#EB6914"
             },
             padding: "0.125rem 0",
             minHeight: "42px",
-            fontFamily: '"Roboto Slab", serif',
             fontSize: "1rem",
             cursor: "pointer"
         }),
@@ -36,21 +37,20 @@ const CustomSelect = ({
             backgroundColor: state.isFocused ? "#FFF7ED" : "white",
             color: state.isSelected ? "#EB6914" : "#374151",
             cursor: "pointer",
-            fontFamily: '"Roboto Slab", serif',
             fontSize: "0.875rem",
             padding: "8px 12px",
             "&:active": {
                 backgroundColor: "#FFEDD5"
             }
         }),
-        menu: (base) => ({
+        menu: base => ({
             ...base,
             borderRadius: "0.5rem",
             overflow: "hidden",
             boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
             marginTop: "0.25rem"
         }),
-        menuList: (base) => ({
+        menuList: base => ({
             ...base,
             padding: "0"
         }),
@@ -68,30 +68,26 @@ const CustomSelect = ({
                 color: "#EF4444"
             }
         }),
-        placeholder: (base) => ({
+        placeholder: base => ({
             ...base,
             color: "#9ca3af",
-            fontFamily: '"Roboto Slab", serif'
-        }),
-        singleValue: (base) => ({
+                    }),
+        singleValue: base => ({
             ...base,
             color: "#374151",
-            fontFamily: '"Roboto Slab", serif'
-        }),
-        input: (base) => ({
+                    }),
+        input: base => ({
             ...base,
-            fontFamily: '"Roboto Slab", serif'
-        }),
-        noOptionsMessage: (base) => ({
+                    }),
+        noOptionsMessage: base => ({
             ...base,
-            fontFamily: '"Roboto Slab", serif',
-            color: "#6b7280"
+                        color: "#6b7280"
         })
     };
 
     // Format options to work with react-select
     const formattedOptions = options.map(opt => {
-        if (typeof opt === 'string') {
+        if (typeof opt === "string") {
             return { value: opt, label: opt };
         }
         return opt;
@@ -105,7 +101,7 @@ const CustomSelect = ({
             <Select
                 options={formattedOptions}
                 value={selectedOption || null}
-                onChange={(option) => onChange(option ? option.value : "")}
+                onChange={option => onChange(option ? option.value : "")}
                 placeholder={placeholder}
                 isClearable={isClearable}
                 isSearchable={isSearchable}

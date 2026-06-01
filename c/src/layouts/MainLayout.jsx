@@ -19,7 +19,7 @@ const MainLayout = () => {
     }, []);
 
     const handleFindRecipe = () => {
-        navigate("/all-recipes");
+        navigate("/recipes");
     };
 
     const handleShareRecipe = () => {

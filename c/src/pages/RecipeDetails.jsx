@@ -14,7 +14,10 @@ import {
     Apple,
     Soup,
     BookOpen,
-    ListOrdered
+    ListOrdered,
+    Star,
+    Heart,
+    CheckCircle
 } from "lucide-react";
 
 const getBadgeConfig = cat => {
@@ -34,6 +37,11 @@ const RecipeDetails = () => {
     const recipe = recipes.find(r => String(r.id) === String(id));
 
     const [activeTab, setActiveTab] = useState("ingredients");
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [showFavoriteMessage, setShowFavoriteMessage] = useState(false);
+    const [userRating, setUserRating] = useState(0);
+    const [hoverRating, setHoverRating] = useState(0);
+    const [showRatingMessage, setShowRatingMessage] = useState(false);
 
     if (!recipe) {
         return (
@@ -62,6 +70,8 @@ const RecipeDetails = () => {
         uploader,
         ingredients = [],
         steps = [],
+        rating,
+        reviews
     } = recipe;
 
     const { color, icon: CategoryIcon } = getBadgeConfig(category);
@@ -77,6 +87,92 @@ const RecipeDetails = () => {
         navigate(`/user/${uploader.id}`);
     };
 
+    const handleFavoriteToggle = () => {
+        const newFavoriteStatus = !isFavorite;
+        setIsFavorite(newFavoriteStatus);
+
+        // Show message
+        setShowFavoriteMessage(true);
+
+        // Hide message after 2 seconds
+        setTimeout(() => {
+            setShowFavoriteMessage(false);
+        }, 2000);
+
+        // Here you would typically save to localStorage or API
+    };
+
+    const handleRating = ratingValue => {
+        setUserRating(ratingValue);
+        setShowRatingMessage(true);
+
+        // Hide message after 2 seconds
+        setTimeout(() => {
+            setShowRatingMessage(false);
+        }, 2000);
+
+        // Here you would typically submit rating to API
+    };
+
+    // Render star rating for recipe display
+    const renderStars = (ratingValue, size = "w-4 h-4") => {
+        const fullStars = Math.floor(ratingValue);
+        const hasHalfStar = ratingValue % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        return (
+            <div className="flex items-center gap-0.5">
+                {[...Array(fullStars)].map((_, i) => (
+                    <Star
+                        key={`full-${i}`}
+                        className={`${size} fill-yellow-400 text-yellow-400`}
+                    />
+                ))}
+                {hasHalfStar && (
+                    <div className="relative">
+                        <Star className={`${size} text-yellow-400`} />
+                        <div className="absolute inset-0 overflow-hidden w-1/2">
+                            <Star
+                                className={`${size} fill-yellow-400 text-yellow-400`}
+                            />
+                        </div>
+                    </div>
+                )}
+                {[...Array(emptyStars)].map((_, i) => (
+                    <Star
+                        key={`empty-${i}`}
+                        className={`${size} text-gray-300`}
+                    />
+                ))}
+            </div>
+        );
+    };
+
+    // Render interactive rating stars for user input
+    const renderInteractiveStars = () => {
+        return (
+            <div className="flex items-center justify-center gap-1">
+                {[1, 2, 3, 4, 5].map(star => (
+                    <button
+                        key={star}
+                        onClick={() => handleRating(star)}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        className="focus:outline-none transition-transform hover:scale-110"
+                    >
+                        <Star
+                            className={`w-8 h-8 ${
+                                (hoverRating || userRating) >= star
+                                    ? "fill-yellow-400 text-yellow-400"
+                                    : "text-gray-300"
+                            } transition-colors`}
+                        />
+                    </button>
+                ))}
+            </div>
+        );
+    };
+
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Hero Image - Full Width */}
@@ -88,14 +184,12 @@ const RecipeDetails = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                {/* Category Badge */}
-                <div className="absolute top-4 right-4">
-                    <Badge variant="soft" color={color}>
-                        <div className="flex items-center gap-1">
-                            {CategoryIcon && (
-                                <CategoryIcon className="w-3 h-3" />
-                            )}
-                            <span>{category}</span>
+                {/* Category Badge - Top Right of Image - LARGER SIZE */}
+                <div className="absolute top-4 right-4 z-10">
+                    <Badge variant="solid" color={color} className="px-3 py-1.5 text-sm">
+                        <div className="flex items-center gap-1.5">
+                            {CategoryIcon && <CategoryIcon className="w-4 h-4" />}
+                            <span className="font-medium">{category}</span>
                         </div>
                     </Badge>
                 </div>
@@ -108,6 +202,35 @@ const RecipeDetails = () => {
                     <p className="text-gray-200 text-sm md:text-base line-clamp-2 max-w-3xl">
                         {description}
                     </p>
+                </div>
+
+                {/* Add to Favorites Button - Bottom Right of Image */}
+                <div className="absolute bottom-4 right-4">
+                    <button
+                        onClick={handleFavoriteToggle}
+                        className="bg-white/90 backdrop-blur-sm hover:bg-white rounded-full p-3 shadow-lg transition-all duration-200 hover:scale-105 group relative"
+                    >
+                        <Heart
+                            className={`w-6 h-6 transition-colors ${
+                                isFavorite
+                                    ? "fill-red-500 text-red-500"
+                                    : "text-gray-600 group-hover:text-red-500"
+                            }`}
+                        />
+                    </button>
+                    {/* Favorite Success Message - FIXED POSITION */}
+                    {showFavoriteMessage && (
+                        <div className="absolute bottom-full right-0 mb-3 px-3 py-1.5 bg-green-500 text-white text-sm rounded-lg shadow-lg whitespace-nowrap animate-fade-in z-50">
+                            <div className="flex items-center gap-1">
+                                <CheckCircle className="w-4 h-4" />
+                                <span>
+                                    {isFavorite
+                                        ? "Added to Favorites!"
+                                        : "Removed from Favorites"}
+                                </span>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -152,6 +275,23 @@ const RecipeDetails = () => {
                                     {difficulty}
                                 </Badge>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Rating and Reviews */}
+                    <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
+                            {renderStars(rating, "w-5 h-5")}
+                            <span className="text-lg font-bold text-gray-800">
+                                {rating}
+                            </span>
+                        </div>
+                        <div className="h-6 w-px bg-gray-200"></div>
+                        <div className="text-sm text-gray-500">
+                            <span className="font-semibold text-gray-700">
+                                {reviews.toLocaleString()}
+                            </span>{" "}
+                            reviews
                         </div>
                     </div>
 
@@ -255,7 +395,51 @@ const RecipeDetails = () => {
                         )}
                     </div>
                 )}
+
+                {/* Rate this Recipe Section - Centered */}
+                <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm text-center">
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                        Rate this Recipe
+                    </h3>
+                    <p className="text-gray-500 text-sm mb-4">
+                        Share your experience with others
+                    </p>
+                    {renderInteractiveStars()}
+
+                    {/* Rating Success Message */}
+                    {showRatingMessage && (
+                        <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-green-500 text-white text-sm rounded-lg shadow-lg animate-fade-in">
+                            <CheckCircle className="w-4 h-4" />
+                            <span>
+                                Thank you for rating {userRating} stars!
+                            </span>
+                        </div>
+                    )}
+
+                    {userRating > 0 && !showRatingMessage && (
+                        <p className="text-sm text-primary mt-3 font-medium">
+                            You rated this {userRating} stars
+                        </p>
+                    )}
+                </div>
             </div>
+
+            {/* Add custom animation CSS */}
+            <style jsx>{`
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-10px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                .animate-fade-in {
+                    animation: fadeIn 0.3s ease-out;
+                }
+            `}</style>
         </div>
     );
 };
