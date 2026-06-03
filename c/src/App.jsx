@@ -12,7 +12,8 @@ import UserDetails from "@/pages/UserDetails";
 import AllRecipes from "@/pages/AllRecipes";
 import SearchRecipe from "@/pages/SearchRecipe";
 import Home from "@/pages/Home";
-import Profile from "@/pages/Profile"; // Changed from MyRecipes to Profile
+import Profile from "@/pages/Profile";
+import NewRecipe from "@/pages/NewRecipe"; // Add this import
 
 function App() {
     return (
@@ -26,8 +27,9 @@ function App() {
                 {/* Authenticated pages with AppLayout */}
                 <Route element={<AppLayout />}>
                     <Route path="/home" element={<Home />} />
-                    <Route path="/profile" element={<Profile />} />{" "}
-      <Route path="/search-recipe" element={<SearchRecipe />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/new-recipe" element={<NewRecipe />} /> {/* Add this route */}
+                    <Route path="/search-recipe" element={<SearchRecipe />} />
                 </Route>
 
                 {/* Routes with BackLayout */}

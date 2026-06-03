@@ -166,7 +166,7 @@ const Profile = () => {
     };
 
     const handleAddRecipe = () => {
-        navigate("/add-recipe");
+        navigate("/new-recipe");
     };
 
     const handleApplyFilters = newFilters => {
