@@ -59,6 +59,7 @@ export const currentUser = {
     recipeCount: 2
 };
 
+// Updated recipes with structured ingredients including amount and unit
 export const recipes = [
     {
         id: 1,
@@ -71,7 +72,14 @@ export const recipes = [
         difficulty: "Easy",
         rating: 4.8,
         reviews: 234,
-        ingredients: ["Chicken", "Soy Sauce", "Vinegar", "Garlic", "Bay Leaves", "Black Pepper"],
+        ingredients: [
+            { name: "Chicken", amount: 1.5, unit: "kg" },
+            { name: "Soy Sauce", amount: 0.5, unit: "cup" },
+            { name: "Vinegar", amount: 0.5, unit: "cup" },
+            { name: "Garlic", amount: 6, unit: "clove" },
+            { name: "Bay Leaves", amount: 3, unit: "piece" },
+            { name: "Black Pepper", amount: 1, unit: "tsp" }
+        ],
         steps: [
             "Marinate chicken in soy sauce, garlic, and black pepper for at least 30 minutes.",
             "In a pot, sauté garlic until fragrant.",
@@ -94,7 +102,16 @@ export const recipes = [
         difficulty: "Easy",
         rating: 4.9,
         reviews: 567,
-        ingredients: ["Ice", "Evaporated Milk", "Ube Halaya", "Leche Flan", "Sweetened Beans", "Fruits", "Saba Banana", "Macapuno"],
+        ingredients: [
+            { name: "Ice", amount: 2, unit: "cup" },
+            { name: "Evaporated Milk", amount: 0.5, unit: "cup" },
+            { name: "Ube Halaya", amount: 0.25, unit: "cup" },
+            { name: "Leche Flan", amount: 2, unit: "slice" },
+            { name: "Sweetened Beans", amount: 0.25, unit: "cup" },
+            { name: "Mixed Fruits", amount: 0.5, unit: "cup" },
+            { name: "Saba Banana", amount: 1, unit: "piece" },
+            { name: "Macapuno", amount: 0.25, unit: "cup" }
+        ],
         steps: [
             "Layer sweetened beans, fruits, macapuno, and ube halaya in a tall glass.",
             "Add crushed ice until almost full.",
@@ -116,7 +133,16 @@ export const recipes = [
         difficulty: "Medium",
         rating: 4.7,
         reviews: 189,
-        ingredients: ["Pork Belly", "Tamarind", "Kangkong", "Radish", "Eggplant", "String Beans", "Tomato", "Onion"],
+        ingredients: [
+            { name: "Pork Belly", amount: 1, unit: "kg" },
+            { name: "Tamarind", amount: 2, unit: "piece" },
+            { name: "Kangkong", amount: 1, unit: "bunch" },
+            { name: "Radish", amount: 1, unit: "piece" },
+            { name: "Eggplant", amount: 2, unit: "piece" },
+            { name: "String Beans", amount: 10, unit: "piece" },
+            { name: "Tomato", amount: 2, unit: "piece" },
+            { name: "Onion", amount: 1, unit: "piece" }
+        ],
         steps: [
             "Boil pork in water until tender, skimming off scum.",
             "Add onion, tomato, and tamarind (or sinigang mix).",
@@ -139,7 +165,12 @@ export const recipes = [
         difficulty: "Easy",
         rating: 4.6,
         reviews: 123,
-        ingredients: ["Kapeng Barako Beans", "Hot Water", "Sugar", "Milk (optional)"],
+        ingredients: [
+            { name: "Kapeng Barako Beans", amount: 4, unit: "tbsp" },
+            { name: "Hot Water", amount: 2, unit: "cup" },
+            { name: "Sugar", amount: 2, unit: "tsp" },
+            { name: "Milk", amount: 0.25, unit: "cup" }
+        ],
         steps: [
             "Grind Kapeng Barako beans to a medium-coarse consistency.",
             "Place ground coffee in a French press or coffee maker.",
@@ -162,7 +193,17 @@ export const recipes = [
         difficulty: "Medium",
         rating: 4.8,
         reviews: 445,
-        ingredients: ["Ground Pork", "Carrots", "Onions", "Spring Roll Wrappers", "Egg", "Garlic", "Salt", "Pepper", "Cooking Oil"],
+        ingredients: [
+            { name: "Ground Pork", amount: 500, unit: "g" },
+            { name: "Carrots", amount: 0.5, unit: "cup" },
+            { name: "Onions", amount: 0.5, unit: "cup" },
+            { name: "Spring Roll Wrappers", amount: 20, unit: "piece" },
+            { name: "Egg", amount: 1, unit: "piece" },
+            { name: "Garlic", amount: 3, unit: "clove" },
+            { name: "Salt", amount: 1, unit: "tsp" },
+            { name: "Pepper", amount: 0.5, unit: "tsp" },
+            { name: "Cooking Oil", amount: 2, unit: "cup" }
+        ],
         steps: [
             "Mix ground pork, finely chopped carrots, onions, garlic, salt, and pepper.",
             "Place a spoonful of mixture on a spring roll wrapper.",
@@ -185,7 +226,13 @@ export const recipes = [
         difficulty: "Hard",
         rating: 4.9,
         reviews: 678,
-        ingredients: ["Egg Yolks", "Condensed Milk", "Evaporated Milk", "Sugar", "Vanilla Extract"],
+        ingredients: [
+            { name: "Egg Yolks", amount: 10, unit: "piece" },
+            { name: "Condensed Milk", amount: 1, unit: "can" },
+            { name: "Evaporated Milk", amount: 1, unit: "can" },
+            { name: "Sugar", amount: 1, unit: "cup" },
+            { name: "Vanilla Extract", amount: 1, unit: "tsp" }
+        ],
         steps: [
             "Melt sugar in a saucepan over low heat until golden brown.",
             "Pour caramel into llanera molds, tilting to coat the bottom.",
@@ -200,6 +247,14 @@ export const recipes = [
         isFavorite: false
     }
 ];
+
+// Helper function to format ingredient string
+export const formatIngredient = (ingredient) => {
+    if (ingredient.unit === "to taste") {
+        return `${ingredient.name} (to taste)`;
+    }
+    return `${ingredient.amount} ${ingredient.unit} ${ingredient.name}`;
+};
 
 // Helper function to get recipes by user ID
 export const getRecipesByUser = (userId) => {

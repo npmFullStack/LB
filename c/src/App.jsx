@@ -13,7 +13,8 @@ import AllRecipes from "@/pages/AllRecipes";
 import SearchRecipe from "@/pages/SearchRecipe";
 import Home from "@/pages/Home";
 import Profile from "@/pages/Profile";
-import NewRecipe from "@/pages/NewRecipe"; // Add this import
+import EditProfile from "@/pages/EditProfile";
+import NewRecipe from "@/pages/NewRecipe";
 
 function App() {
     return (
@@ -28,7 +29,8 @@ function App() {
                 <Route element={<AppLayout />}>
                     <Route path="/home" element={<Home />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/new-recipe" element={<NewRecipe />} /> {/* Add this route */}
+                    <Route path="/profile/edit" element={<EditProfile />} />
+                    <Route path="/new-recipe" element={<NewRecipe />} />
                     <Route path="/search-recipe" element={<SearchRecipe />} />
                 </Route>
 

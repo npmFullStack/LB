@@ -234,7 +234,7 @@ const Profile = () => {
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => navigate("/edit-profile")}
+                            onClick={() => navigate("/profile/edit")}
                         >
                             Edit Profile
                         </Button>

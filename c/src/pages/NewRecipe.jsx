@@ -16,6 +16,26 @@ const NewRecipe = () => {
     { label: "New Recipe", path: null } // null indicates current/active page
   ];
 
+  // Unit options for ingredients
+  const unitOptions = [
+    { value: "tsp", label: "teaspoon (tsp)" },
+    { value: "tbsp", label: "tablespoon (tbsp)" },
+    { value: "cup", label: "cup" },
+    { value: "ml", label: "milliliter (ml)" },
+    { value: "l", label: "liter (L)" },
+    { value: "g", label: "gram (g)" },
+    { value: "kg", label: "kilogram (kg)" },
+    { value: "oz", label: "ounce (oz)" },
+    { value: "lb", label: "pound (lb)" },
+    { value: "piece", label: "piece" },
+    { value: "clove", label: "clove" },
+    { value: "slice", label: "slice" },
+    { value: "pinch", label: "pinch" },
+    { value: "dash", label: "dash" },
+    { value: "to taste", label: "to taste" },
+    { value: "whole", label: "whole" }
+  ];
+
   // Form state
   const [formData, setFormData] = useState({
     title: "",
@@ -26,7 +46,7 @@ const NewRecipe = () => {
     servings: "",
     image: null,
     imagePreview: null,
-    ingredients: [{ id: 1, name: "", amount: "" }],
+    ingredients: [{ id: 1, name: "", amount: "", unit: "tbsp" }],
     instructions: [{ id: 1, step: "" }],
   });
 
@@ -104,7 +124,7 @@ const NewRecipe = () => {
       ...prev,
       ingredients: [
         ...prev.ingredients,
-        { id: Date.now(), name: "", amount: "" },
+        { id: Date.now(), name: "", amount: "", unit: "tbsp" },
       ],
     }));
   };
@@ -176,7 +196,7 @@ const NewRecipe = () => {
     
     // Check ingredients
     const hasEmptyIngredient = formData.ingredients.some(
-      (ing) => !ing.name.trim() || !ing.amount.trim()
+      (ing) => !ing.name.trim() || !ing.amount.toString().trim()
     );
     if (hasEmptyIngredient) {
       newErrors.ingredients = "All ingredients must have name and amount";
@@ -436,15 +456,28 @@ const NewRecipe = () => {
                       className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
-                  <div className="w-32">
+                  <div className="w-28">
                     <input
-                      type="text"
+                      type="number"
+                      step="any"
                       value={ingredient.amount}
                       onChange={(e) =>
                         updateIngredient(ingredient.id, "amount", e.target.value)
                       }
                       placeholder="Amount"
                       className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <div className="w-36">
+                    <CustomSelect
+                      options={unitOptions}
+                      value={ingredient.unit}
+                      onChange={(value) =>
+                        updateIngredient(ingredient.id, "unit", value)
+                      }
+                      placeholder="Unit"
+                      isClearable={false}
+                      isSearchable={true}
                     />
                   </div>
                   {formData.ingredients.length > 1 && (

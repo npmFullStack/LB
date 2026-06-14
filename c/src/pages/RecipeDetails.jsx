@@ -1,7 +1,7 @@
 // src/pages/RecipeDetails.jsx
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { recipes } from "@/data/mock_data";
+import { recipes, formatIngredient } from "@/data/mock_data";
 import Badge from "@/components/Badge";
 import Button from "@/components/Button";
 import {
@@ -340,7 +340,7 @@ const RecipeDetails = () => {
                     </button>
                 </div>
 
-                {/* Ingredients Tab - No checkboxes */}
+                {/* Ingredients Tab - Now displays with amount and unit */}
                 {activeTab === "ingredients" && (
                     <div className="bg-white rounded-2xl border border-gray-100 p-5 md:p-6 shadow-sm">
                         <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-4">
@@ -358,7 +358,9 @@ const RecipeDetails = () => {
                                         className="flex items-center gap-3 p-3 text-gray-700"
                                     >
                                         <span className="w-1.5 h-1.5 bg-primary rounded-full"></span>
-                                        <span className="text-sm">{ing}</span>
+                                        <span className="text-sm">
+                                            {formatIngredient(ing)}
+                                        </span>
                                     </li>
                                 ))}
                             </ul>
